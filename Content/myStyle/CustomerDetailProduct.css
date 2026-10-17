@@ -1,0 +1,26 @@
+﻿/* Style cho trang Chi tiết sản phẩm */
+.pro-section {
+    background-color: white;
+    border: 1px groove #f0f0f0;
+    border-radius: 4px;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+    .pro-section img {
+        max-height: 250px;
+        max-width: 100%;
+        object-fit: contain;
+        padding: 10px;
+    }
+
+.pro-price {
+    font-weight: bolder;
+    font-size: larger;
+    color: #b12704;
+}
+
+.pro-sale {
+    font-weight: lighter;
+    color: #565959;
+}

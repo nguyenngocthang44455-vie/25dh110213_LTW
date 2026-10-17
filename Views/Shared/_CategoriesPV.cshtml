@@ -1,0 +1,8 @@
+﻿@model IEnumerable<_25dh110213_LTW.Models.Category>
+
+@foreach (var item in Model)
+{
+    <li>
+        @Html.ActionLink(item.CategoryName, "ProductList", "Home", new { id = item.CategoryID }, null)
+    </li>
+}

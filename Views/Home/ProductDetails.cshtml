@@ -1,0 +1,33 @@
+﻿@model _25dh110213_LTW.Models.ViewModel.ProductDetailsVM
+
+@{
+    ViewBag.Title = Model?.product?.ProductName ?? "Chi tiết sản phẩm";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container" style="max-width:1100px; margin-top:20px;">
+    <div style="display:flex; gap:20px;">
+        <div style="flex:1;">
+            <img src="@Url.Content(Model.product?.ProductImage ?? "~/Content/images/default_img.png")" style="width:100%; max-height:400px; object-fit:cover;" alt="@Model.product?.ProductName" />
+        </div>
+        <div style="flex:1;">
+            <h2>@(Model.product != null ? Model.product.ProductName : "Sản phẩm")</h2>
+            <p style="color:#b12704; font-weight:bold; font-size:20px;">@(Model.product != null ? Model.product.ProductPrice.ToString("N0") + " đ" : "--")</p>
+            <p><strong>Mô tả:</strong></p>
+            <div>@Html.Raw(Model.product?.ProductDescription ?? "Chưa có mô tả")</div>
+
+            <div style="margin-top:15px;">
+                @if (Model.product != null)
+                {
+                    <a href="@Url.Action("AddToCart", "Cart", new { id = Model.product.ProductID })" class="btn" style="background:#ffd814;padding:8px 12px;color:#111;text-decoration:none;">Thêm vào giỏ</a>
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (Model.TopProducts != null && Model.TopProducts.Any())
+    {
+        <h3 style="margin-top:25px;">Sản phẩm tương tự</h3>
+        @Html.Partial("_PVSimilarProduct", Model.TopProducts)
+    }
+</div>

@@ -1,0 +1,49 @@
+﻿/* CSS Trang chủ khách hàng */
+.banner-container {
+    background-color: #f8f9fa;
+    padding: 30px;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.search-input {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #ffd814;
+    border: 1px solid #fcd200;
+    font-weight: bold;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.product-item {
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    text-align: center;
+    background: #fff;
+}
+
+    .product-item img {
+        max-height: 150px;
+        object-fit: contain;
+        margin-bottom: 10px;
+    }
+
+    .product-item .price {
+        color: #b12704;
+        font-weight: bold;
+    }

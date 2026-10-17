@@ -1,0 +1,52 @@
+﻿@model _25dh110213_LTW.Models.Order
+
+@{
+    ViewBag.Title = "Xác nhận đơn hàng";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container" style="max-width: 900px; margin-top: 20px;">
+    <div class="alert alert-success" style="padding: 20px; background-color: #d4edda; color: #155724; border-radius: 4px;">
+        <h2>Đặt hàng thành công!</h2>
+        <p>Cảm ơn bạn đã mua hàng tại cửa hàng của chúng tôi. Đơn hàng của bạn đang được xử lý.</p>
+    </div>
+
+    <h3>Thông tin đơn hàng</h3>
+    <ul style="list-style: none; padding: 0; line-height: 1.8;">
+        <li><strong>Mã đơn hàng:</strong> @Model.OrderID</li>
+        <li><strong>Ngày đặt hàng:</strong> @Model.OrderDate</li>
+        <li><strong>Tổng số tiền:</strong> <span style="color: #b12704; font-weight: bold;">@Model.TotalAmount.ToString("N0") đ</span></li>
+        <li><strong>Trạng thái thanh toán:</strong> @Model.PaymentStatus</li>
+        <li><strong>Phương thức thanh toán:</strong> @Model.PaymentMethod</li>
+        <li><strong>Phương thức giao hàng:</strong> @Model.DeliveryMethod</li>
+        <li><strong>Địa chỉ giao hàng:</strong> @Model.ShippingAddress</li>
+    </ul>
+
+    <h3 style="margin-top: 25px;">Chi tiết đơn hàng</h3>
+    <table class="table table-bordered" style="width: 100%;">
+        <thead>
+            <tr style="background-color: #f8f9fa;">
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderDetails)
+            {
+                <tr>
+                    <td>@(item.Product != null ? item.Product.ProductName : "Sản phẩm")</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.UnitPrice.ToString("N0") đ</td>
+                    <td>@string.Format("{0:N0}", item.UnitPrice * item.Quantity) đ</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px;">
+        @Html.ActionLink("Xem lịch sử đơn hàng", "MyOrder", "Order", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Tiếp tục mua sắm", "Index", "Home", null, new { @class = "btn btn-default" })
+    </div>
+</div>

@@ -1,0 +1,75 @@
+﻿@model _25dh110213_LTW.Models.Customer
+
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container" style="max-width: 800px; background: #fff; padding: 25px; margin-top: 30px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; margin-bottom: 20px;">THÔNG TIN TÀI KHOẢN</h2>
+    <hr />
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <!-- 1. PHẦN THÔNG TIN CÁ NHÂN VÀ CẬP NHẬT -->
+    <h3 style="margin-top: 20px;">Thông tin cá nhân</h3>
+    @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.CustomerID)
+
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Email (Tên đăng nhập):</label>
+            <input type="text" class="form-control" value="@Model.CustomerEmail" readonly="readonly" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Họ và tên:</label>
+            @Html.EditorFor(m => m.CustomerName, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Số điện thoại:</label>
+            @Html.EditorFor(m => m.CustomerPhone, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Địa chỉ:</label>
+            @Html.EditorFor(m => m.CustomerAddress, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="background-color: #ffd814; color: #000; border: 1px solid #fcd200; font-weight: bold; padding: 8px 20px;">
+            Cập nhật thông tin
+        </button>
+    }
+
+    <hr style="margin: 30px 0;" />
+
+    <!-- 2. PHẦN THAY ĐỔI MẬT KHẨU -->
+    <h3>Đổi mật khẩu</h3>
+    @using (Html.BeginForm("ChangePassword", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Mật khẩu cũ:</label>
+            <input type="password" name="oldPassword" class="form-control" required="required" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Mật khẩu mới:</label>
+            <input type="password" name="newPassword" class="form-control" required="required" />
+        </div>
+
+        <button type="submit" class="btn btn-warning" style="font-weight: bold; padding: 8px 20px;">
+            Đổi mật khẩu
+        </button>
+    }
+</div>

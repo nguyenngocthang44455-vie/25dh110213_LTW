@@ -1,0 +1,25 @@
+﻿@model _25dh110213_LTW.Models.Category
+
+@{
+    ViewBag.Title = "Chi tiết danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success">CHI TIẾT DANH MỤC</h2>
+
+<div class="form-horizontal">
+    <hr />
+    <div class="form-group">
+        <div class="control-label col-md-2">Tên danh mục</div>
+        <div class="col-md-10">
+            <p class="form-control-static">@Html.DisplayFor(model => model.CategoryName)</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Cập nhật", "Edit", new { id = Model.CategoryID }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+</div>

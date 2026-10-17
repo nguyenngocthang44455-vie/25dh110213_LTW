@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Trang quản trị";
+}
+
+<h2>TRANG QUẢN TRỊ</h2>
+<h4>Thống kê số sản phẩm theo danh mục</h4>
+<div id="chart_div" style="width:100%; height:400px;"></div>
+
+@section Scripts {
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', { packages: ['corechart'] });
+        google.charts.setOnLoadCallback(function () {
+            var data = google.visualization.arrayToDataTable(@Html.Raw(ViewBag.ChartData));
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, { title: 'Sản phẩm theo danh mục' });
+        });
+    </script>
+}

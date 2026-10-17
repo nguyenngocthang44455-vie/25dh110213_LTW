@@ -1,0 +1,34 @@
+﻿@model _25dh110213_LTW.Models.Product
+
+<style>
+    .info-img {
+        height: 250px;
+        max-width: 250px;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row bg-info" style="padding:10px;">
+        <div class="col-md-3">
+            @if (!string.IsNullOrEmpty(Model.ProductImage) && Model.ProductImage.StartsWith("~/"))
+            {
+                <img class="info-img" src="@Url.Content(Model.ProductImage)" alt="" />
+            }
+        </div>
+        <div class="col-md-9">
+            <dl>
+                <dt>Tên sản phẩm</dt>
+                <dd>@Html.DisplayFor(model => model.ProductName)</dd>
+
+                <dt>Mô tả</dt>
+                <dd>@Html.DisplayFor(model => model.ProductDescription)</dd>
+
+                <dt>Đơn giá</dt>
+                <dd>@string.Format("{0:N0}", Model.ProductPrice)</dd>
+
+                <dt>Danh mục</dt>
+                <dd>@Html.DisplayFor(model => model.Category.CategoryName)</dd>
+            </dl>
+        </div>
+    </div>
+</div>

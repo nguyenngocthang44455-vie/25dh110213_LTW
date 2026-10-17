@@ -1,0 +1,72 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model IPagedList<_25dh110213_LTW.Models.Order>
+
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    int? customerId = ViewBag.CustomerId;
+    string customerName = ViewBag.CustomerName;
+    string sortOrder = ViewBag.SortOrder;
+}
+
+@if (customerId.HasValue)
+{
+    <h2>ĐƠN HÀNG CỦA KHÁCH: @customerName</h2>
+    <p>@Html.ActionLink("Xem tất cả đơn hàng", "Index", "Orders", new { area = "Admin" }, new { @class = "btn btn-default" })</p>
+}
+else
+{
+    <h2>DANH SÁCH ĐƠN HÀNG</h2>
+}
+
+@using (Html.BeginForm("Index", "Orders", FormMethod.Get))
+{
+    <div class="form-inline" style="margin-bottom:15px;">
+        @if (customerId.HasValue)
+        {
+            <input type="hidden" name="customerId" value="@customerId" />
+        }
+        <select name="sortOrder" class="form-control">
+            <option value="">Ngày đặt: mới nhất</option>
+            <option value="date_asc" @(sortOrder == "date_asc" ? "selected" : "")>Ngày đặt: cũ nhất</option>
+            <option value="total_desc" @(sortOrder == "total_desc" ? "selected" : "")>Tổng tiền: cao → thấp</option>
+            <option value="total_asc" @(sortOrder == "total_asc" ? "selected" : "")>Tổng tiền: thấp → cao</option>
+        </select>
+        <input type="submit" value="Sắp xếp" class="btn btn-primary" />
+    </div>
+}
+
+<table class="table">
+    <tr class="bg-primary">
+        <th>Mã đơn</th>
+        <th>Khách hàng</th>
+        <th>Ngày đặt</th>
+        <th>Tổng tiền</th>
+        <th>Thanh toán</th>
+        <th>Địa chỉ giao hàng</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>#@item.OrderID</td>
+            <td>@(item.Customer != null ? item.Customer.CustomerName : "Khách lẻ")</td>
+            <td>@string.Format("{0:dd/MM/yyyy HH:mm}", item.OrderDate)</td>
+            <td>@string.Format("{0:N0}", item.TotalAmount)</td>
+            <td>@item.PaymentStatus</td>
+            <td>@item.AddressDelivery</td>
+            <td>@Html.ActionLink("Chi tiết", "Details", new { id = item.OrderID }, new { @class = "btn btn-info btn-sm" })</td>
+        </tr>
+    }
+</table>
+
+@if (Model.TotalItemCount == 0)
+{
+    <p class="text-muted">Chưa có dữ liệu.</p>
+}
+else
+{
+    <div>Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount</div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, customerId = customerId, sortOrder = sortOrder }), PagedListRenderOptions.Classic)
+}

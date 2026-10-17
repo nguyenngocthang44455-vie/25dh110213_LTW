@@ -1,0 +1,28 @@
+﻿@model _25dh110213_LTW.Models.Product
+
+@{
+    ViewBag.Title = "Thêm sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success">THÊM SẢN PHẨM</h2>
+
+@using (Html.BeginForm("Create", "Products", FormMethod.Post,
+    new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.Partial("PVCreateEditProduct", Model)
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Thêm mới" class="btn btn-primary" />
+                @Html.ActionLink("Quay lại danh sách", "Index", null,
+                    new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </div>
+}

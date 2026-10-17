@@ -1,0 +1,82 @@
+﻿@model _25dh110213_LTW.Models.ViewModel.Cart
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container" style="max-width: 950px; margin-top: 20px;">
+    <h2>GIỎ HÀNG CỦA BẠN</h2>
+    <hr />
+
+    @if (Model.Items == null || !Model.Items.Any())
+    {
+        <div class="alert alert-warning" style="padding: 15px; background-color: #fff3cd; border-color: #ffeeba; color: #856404; border-radius: 4px;">
+            Giỏ hàng đang trống. <a href="@Url.Action("Index", "Home")" style="font-weight: bold; color: #856404; text-decoration: underline;">Tiếp tục mua sắm</a>
+        </div>
+    }
+    else
+    {
+        foreach (var group in Model.GroupedItems)
+        {
+            <div class="cart-section" style="background-color: #f8f9fa; padding: 15px; margin-bottom: 20px; border-radius: 4px; border: 1px solid #e9ecef;">
+                <h3 style="font-size: 16px; color: #007185; border-bottom: 2px solid #ffd814; padding-bottom: 8px; margin-top: 0;">@group.Key</h3>
+                <table class="table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #dee2e6;">
+                            <th style="width: 45%; padding: 8px; text-align: left;">Sản phẩm</th>
+                            <th style="width: 15%; padding: 8px; text-align: center;">Số lượng</th>
+                            <th style="width: 15%; padding: 8px; text-align: right;">Đơn giá</th>
+                            <th style="width: 15%; padding: 8px; text-align: right;">Thành tiền</th>
+                            <th style="width: 10%; padding: 8px; text-align: center;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in group)
+                        {
+                            <tr style="border-bottom: 1px solid #dee2e6;">
+                                <td style="padding: 8px; vertical-align: middle;">
+                                    @if (!string.IsNullOrEmpty(item.ProductImage))
+                                    {
+                                        <img src="@Url.Content(item.ProductImage.StartsWith("~/") ? item.ProductImage : "~/Content/images/" + item.ProductImage)" style="max-height: 50px; margin-right: 10px; vertical-align: middle;" />
+                                    }
+                                    <a href="@Url.Action("ProductDetails", "Home", new { id = item.ProductID })" style="color: #0f1111; text-decoration: none; font-weight: bold;">@item.ProductName</a>
+                                </td>
+                                <td style="padding: 8px; text-align: center; vertical-align: middle;">
+                                    @using (Html.BeginForm("UpdateQuantity", "Cart", FormMethod.Post, new { style = "display: flex; gap: 5px; justify-content: center;" }))
+                                    {
+                                        <input type="hidden" name="id" value="@item.ProductID" />
+                                        <input type="number" name="quantity" value="@item.Quantity" min="1" style="width: 55px; text-align: center;" />
+                                        <button type="submit" class="btn btn-xs btn-default" style="padding: 2px 6px;">Cập nhật</button>
+                                    }
+                                </td>
+                                <td style="padding: 8px; text-align: right; vertical-align: middle;">@item.UnitPrice.ToString("N0") đ</td>
+                                <td style="padding: 8px; text-align: right; vertical-align: middle; font-weight: bold; color: #b12704;">@item.TotalPrice.ToString("N0") đ</td>
+                                <td style="padding: 8px; text-align: center; vertical-align: middle;">
+                                    <a href="@Url.Action("RemoveFromCart", "Cart", new { id = item.ProductID })" class="btn btn-danger btn-xs" style="padding: 3px 8px; background-color: #dc3545; color: #fff; text-decoration: none; border-radius: 3px;">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        <div class="cart-summary" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fff; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 30px;">
+            <div>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-default" style="padding: 8px 15px; border: 1px solid #ccc; text-decoration: none; color: #333; margin-right: 10px;">Tiếp tục mua hàng</a>
+                <a href="@Url.Action("ClearCart", "Cart")" class="btn btn-default" style="padding: 8px 15px; border: 1px solid #ccc; text-decoration: none; color: #333;">Xóa toàn bộ giỏ hàng</a>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 16px; margin-bottom: 10px;">Tổng tiền thanh toán: <strong style="color: #b12704; font-size: 20px;">@Model.TotalValue().ToString("N0") đ</strong></div>
+                <a href="@Url.Action("Checkout", "Order")" class="btn btn-success" style="padding: 10px 25px; background-color: #28a745; color: #fff; font-weight: bold; text-decoration: none; border-radius: 4px;">Tiến hành Đặt hàng</a>
+            </div>
+        </div>
+    }
+
+    <!-- Tải Partial View hiển thị sản phẩm tương tự -->
+    @if (Model.SimilarProducts != null && Model.SimilarProducts.Any())
+    {
+        @Html.Partial("_PVSimilarProduct", Model.SimilarProducts)
+    }
+</div>

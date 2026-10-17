@@ -1,0 +1,24 @@
+﻿@model _25dh110213_LTW.Models.Product
+
+<div class="product-card">
+    <a class="thumb" href="@Url.Action("ProductDetails", "Home", new { area = "", id = Model.ProductID })">
+        @if (!string.IsNullOrEmpty(Model.ProductImage) && Model.ProductImage.StartsWith("~/"))
+        {
+            <img src="@Url.Content(Model.ProductImage)" alt="@Model.ProductName" />
+        }
+        else
+        {
+            <span class="no-img">Chưa có ảnh</span>
+        }
+    </a>
+    <div class="info">
+        <a class="name" href="@Url.Action("ProductDetails", "Home", new { area = "", id = Model.ProductID })">@Model.ProductName</a>
+        <div class="price">@string.Format("{0:N0} đ", Model.ProductPrice)</div>
+        @using (Html.BeginForm("AddToCart", "Cart", new { area = "" }, FormMethod.Post))
+        {
+            <input type="hidden" name="id" value="@Model.ProductID" />
+            <input type="hidden" name="quantity" value="1" />
+            <button type="submit" class="btn btn-primary btn-sm btn-block">Thêm vào giỏ</button>
+        }
+    </div>
+</div>

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<_25dh110213_LTW.Models.Order>
+
+@{
+    ViewBag.Title = "Đơn hàng của tôi";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container" style="max-width: 950px; margin-top: 20px;">
+    <h2>ĐƠN HÀNG CỦA TÔI</h2>
+    <hr />
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">Bạn chưa có đơn hàng nào.</div>
+    }
+    else
+    {
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr style="background-color: #f8f9fa;">
+                    <th>Mã ĐH</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái thanh toán</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>#@item.OrderID</strong></td>
+                        <td>@item.OrderDate</td>
+                        <td style="color: #b12704; font-weight: bold;">@item.TotalAmount.ToString("N0") đ</td>
+                        <td><span class="label label-info">@item.PaymentStatus</span></td>
+                        <td>
+                            @Html.ActionLink("Chi tiết", "OrderSuccess", new { id = item.OrderID }, new { @class = "btn btn-sm btn-info" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

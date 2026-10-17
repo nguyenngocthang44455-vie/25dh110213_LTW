@@ -1,0 +1,23 @@
+﻿@model _25dh110213_LTW.Models.User
+
+@{
+    ViewBag.Title = "Chi tiết tài khoản";
+}
+
+<h2>CHI TIẾT TÀI KHOẢN</h2>
+
+<div>
+    <h4>Thông tin tài khoản</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Tên đăng nhập</dt>
+        <dd>@Model.Username</dd>
+
+        <dt>Vai trò</dt>
+        <dd>@(Model.UserRole == "A" ? "Quản trị viên" : Model.UserRole == "S" ? "Nhân viên" : Model.UserRole)</dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.Username }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+</p>

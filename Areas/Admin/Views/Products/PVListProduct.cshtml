@@ -1,0 +1,52 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model _25dh110213_LTW.Models.ViewModel.SearchProductVM
+
+<style>
+    .product-img {
+        height: 150px;
+        max-width: 150px;
+    }
+</style>
+
+<table class="table bg-info container-fluid">
+    <tr>
+        <th class="bg-success col-md-2">Hình ảnh</th>
+        <th class="bg-success col-md-3">Tên sản phẩm</th>
+        <th class="bg-success col-md-2">Đơn giá</th>
+        <th class="bg-success col-md-2">Danh mục</th>
+        <th class="bg-success col-md-3"></th>
+    </tr>
+
+    @foreach (var item in Model.Products)
+    {
+        <tr>
+            <td>
+                @if (!string.IsNullOrEmpty(item.ProductImage) && item.ProductImage.StartsWith("~/"))
+                {
+                    <img class="product-img" src="@Url.Content(item.ProductImage)" alt="" />
+                }
+            </td>
+            <td>@item.ProductName</td>
+            <td>@string.Format("{0:N0}", item.ProductPrice)</td>
+            <td>@item.Category.CategoryName</td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.ProductID }, new { @class = "btn btn-primary btn-sm" })
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.ProductID }, new { @class = "btn btn-primary btn-sm" })
+                @Html.ActionLink("Xóa", "Delete", new { id = item.ProductID }, new { @class = "btn btn-primary btn-sm" })
+            </td>
+        </tr>
+    }
+</table>
+
+@if (Model.Products.TotalItemCount == 0)
+{
+    <p class="text-muted">Chưa có sản phẩm nào.</p>
+}
+else
+{
+    <div>Trang @(Model.Products.PageCount < Model.Products.PageNumber ? 0 : Model.Products.PageNumber) / @Model.Products.PageCount</div>
+    @Html.PagedListPager(Model.Products,
+        page => Url.Action("Index", new { page, searchTerm = Model.SearchTerm, minPrice = Model.MinPrice, maxPrice = Model.MaxPrice, sortOrder = Model.SortOrder }),
+        PagedListRenderOptions.Classic)
+}

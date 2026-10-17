@@ -1,0 +1,46 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model IPagedList<_25dh110213_LTW.Models.User>
+
+@{
+    ViewBag.Title = "Danh sách tài khoản";
+    string searchTerm = ViewBag.SearchTerm;
+}
+
+<h2>DANH SÁCH TÀI KHOẢN ADMIN</h2>
+
+<p>
+    @Html.ActionLink("Thêm mới", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+@using (Html.BeginForm("Index", "Users", FormMethod.Get))
+{
+    <div class="form-inline" style="margin-bottom:15px;">
+        <input type="text" name="searchTerm" value="@searchTerm" class="form-control" placeholder="Nhập tên đăng nhập hoặc vai trò..." style="width:300px;" />
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+    </div>
+}
+
+<table class="table">
+    <tr class="bg-primary">
+        <th>Tên đăng nhập</th>
+        <th>Vai trò</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Username</td>
+            <td>@(item.UserRole == "A" ? "Quản trị viên" : item.UserRole == "S" ? "Nhân viên" : item.UserRole)</td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.Username }, new { @class = "btn btn-warning btn-sm" })
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.Username }, new { @class = "btn btn-info btn-sm" })
+                @Html.ActionLink("Xóa", "Delete", new { id = item.Username }, new { @class = "btn btn-danger btn-sm" })
+            </td>
+        </tr>
+    }
+</table>
+
+<div>Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount</div>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchTerm = searchTerm }), PagedListRenderOptions.Classic)

@@ -1,0 +1,75 @@
+﻿@model _25dh110213_LTW.Models.ViewModel.CheckoutVM
+
+@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container" style="max-width: 900px; margin-top: 20px;">
+    <h2>THANH TOÁN ĐƠN HÀNG</h2>
+    <hr />
+
+    @using (Html.BeginForm("Checkout", "Order", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-md-7">
+                <h3>Thông tin giao hàng</h3>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>Địa chỉ giao hàng:</label>
+                    @Html.TextBoxFor(m => m.ShippingAddress, new { @class = "form-control", @id = "shippingAddress", @readonly = "readonly" })
+                    <button type="button" class="btn btn-xs btn-link" onclick="enableAddressEdit()" style="padding: 0; margin-top: 5px;">Chỉnh sửa địa chỉ</button>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>Phương thức giao hàng:</label>
+                    <select name="ShippingMethod" class="form-control">
+                        <option value="Giao siêu tốc 2H">Giao siêu tốc 2H</option>
+                        <option value="Giao tiết kiệm">Giao tiết kiệm</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>Phương thức thanh toán:</label>
+                    <select name="PaymentMethod" class="form-control">
+                        <option value="Tiền mặt">Thanh toán tiền mặt</option>
+                        <option value="Paypal">Paypal</option>
+                        <option value="Thẻ ngân hàng">Thẻ ngân hàng / Visa</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <h3>Đơn hàng của bạn</h3>
+                <table class="table" style="width: 100%; font-size: 13px;">
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>SL</th>
+                        <th>Tạm tính</th>
+                    </tr>
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.TotalPrice.ToString("N0") đ</td>
+                        </tr>
+                    }
+                </table>
+                <hr />
+                <h4>Tổng tiền: <span style="color: #b12704; font-weight: bold;">@Model.TotalAmount.ToString("N0") đ</span></h4>
+
+                <button type="submit" class="btn btn-danger" style="width: 100%; background-color: #f0c14b; color: #111; border: 1px solid #a88734; font-weight: bold; padding: 10px; margin-top: 15px;">Đặt hàng</button>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function enableAddressEdit() {
+        var addrInput = document.getElementById('shippingAddress');
+        addrInput.removeAttribute('readonly');
+        addrInput.focus();
+    }
+</script>

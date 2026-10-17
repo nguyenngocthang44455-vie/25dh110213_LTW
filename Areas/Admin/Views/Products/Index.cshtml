@@ -1,0 +1,33 @@
+﻿@model _25dh110213_LTW.Models.ViewModel.SearchProductVM
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success">DANH SÁCH SẢN PHẨM</h2>
+
+@using (Html.BeginForm("Index", "Products", FormMethod.Get))
+{
+    <div class="form-inline" style="margin-bottom:15px;">
+        <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Nhập tên, mô tả hoặc danh mục..." style="width:300px;" />
+        <input type="number" name="minPrice" value="@Model.MinPrice" min="0" class="form-control" placeholder="Giá từ" style="width:120px;" />
+        <input type="number" name="maxPrice" value="@Model.MaxPrice" min="0" class="form-control" placeholder="Giá đến" style="width:120px;" />
+        <select name="sortOrder" class="form-control">
+            <option value="">-- Sắp xếp --</option>
+            <option value="name_asc" @(Model.SortOrder == "name_asc" ? "selected" : "")>Tên: A → Z</option>
+            <option value="name_desc" @(Model.SortOrder == "name_desc" ? "selected" : "")>Tên: Z → A</option>
+            <option value="price_asc" @(Model.SortOrder == "price_asc" ? "selected" : "")>Giá: thấp → cao</option>
+            <option value="price_desc" @(Model.SortOrder == "price_desc" ? "selected" : "")>Giá: cao → thấp</option>
+        </select>
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+    </div>
+}
+
+@Html.Partial("PVListProduct", Model)
+
+<div class="form-group">
+    <div class="col-md-offset-8 col-md-4">
+        @Html.ActionLink("Thêm mới", "Create", null, new { @class = "btn btn-primary" })
+    </div>
+</div>
